@@ -46,4 +46,24 @@ function DiveLogCtrl($scope) {
     $scope.isRed = function () {
         return $scope.selection.indexOf('rd') >= 0;
     }
+
+    $scope.size = function () {
+        return $scope.selection.indexOf('sm') >= 0
+            ? "col-sm-4" : "col-sm-6";
+    }
+
+    $scope.color = function () {
+        return $scope.selection.indexOf('bl') >= 0
+            ? {
+                'border': '2px solid navy',
+                'background-color': 'navy',
+                'color': 'white'
+            }
+            : ($scope.selection.indexOf('rd') >= 0
+                ? {
+                    'border': '2px solid darkred',
+                    'background-color': 'darkred',
+                    'color': 'white'
+                } : {});
+    }
 }

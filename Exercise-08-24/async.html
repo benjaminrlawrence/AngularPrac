@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html ng-app="validation">
+<head>
+  <title>Overriding number</title>
+  <link href="css/bootstrap.css" rel="stylesheet" />
+  <style>
+    input.ng-invalid-domain {
+      border: 2px solid maroon;
+      background-color: lightpink;
+    }
+    .checking {
+        border: 4px dotted darkgray;
+    }
+  </style>
+</head>
+<body style="margin-top:12px;">
+  <div class="container">
+    <form name="simple" novalidate>
+      <div class="form-group">
+          <label class="control-label">A valid domain name</label>
+          <input class="form-control"
+                 autofocus
+                 name="domainName"
+                 ng-model="domainName"
+                 dividable="useThis"
+                 domain />
+      </div>
+    </form>
+  </div>
+  <script src="angular.min.js"></script>
+  <script>
+      angular.module('validation', [])
+        .directive('domain', function ($q) {
+            return {
+                require: 'ngModel',
+                restrict: 'A',
+                link: function (scope, element, attrs, ctrl) {
+                    ctrl.$asyncValidators.domian = function (value) {
+                        var defer = $q.defer();
+                        if (ctrl.$isEmpty(value)) {
+                            defer.resolve();
+                            console.log("Type Something")
+                        }
+                        else {
+                            element.addClass('checking');
+                            setTimeout(function () {
+                                if (value.length > 0
+                                    && value.toUpperCase().charAt(0) == 'M') {
+                                    defer.resolve();
+                                    element.removeClass('checking');
+                                    console.log("This is good")
+                                }
+                                else {
+                                    defer.reject();
+                                    element.removeClass('checking');
+                                    console.log("this is bad")
+                                }
+                            }, 2000);
+                        }
+                        return defer.promise;
+                    };
+                }
+            };
+        });
+  </script>
+</body>
+</html>
